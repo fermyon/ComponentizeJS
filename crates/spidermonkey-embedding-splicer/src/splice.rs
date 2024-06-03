@@ -45,14 +45,14 @@ pub fn splice(
         module.exports.delete(expt.id());
         module.funcs.delete(run);
     }
-    if let Ok(serve) = module
-        .exports
-        .get_func("wasi:http/incoming-handler@0.2.0#handle")
-    {
-        let expt = module.exports.get_exported_func(serve).unwrap();
-        module.exports.delete(expt.id());
-        module.funcs.delete(serve);
-    }
+    // if let Ok(serve) = module
+    //     .exports
+    //     .get_func("wasi:http/incoming-handler@0.2.0#handle")
+    // {
+    //     let expt = module.exports.get_exported_func(serve).unwrap();
+    //     module.exports.delete(expt.id());
+    //     module.funcs.delete(serve);
+    // }
 
     // we reencode the WASI world component data, so strip it out from the
     // custom section
@@ -523,6 +523,10 @@ fn synthesize_export_functions(
     let arg_ptr = module.locals.add(ValType::I32);
     let ret_ptr = module.locals.add(ValType::I32);
     for (export_num, (expt_name, expt_sig)) in exports.iter().enumerate() {
+        // Skip since we want to use fetchEvent for this
+        if expt_name == "wasi:http/incoming-handler@0.2.0#handle" {
+            continue;
+        }
         // Export function synthesis
         {
             // add the function type

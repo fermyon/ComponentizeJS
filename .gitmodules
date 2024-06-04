@@ -1,3 +1,4 @@
 [submodule "StarlingMonkey"]
 	path = StarlingMonkey
 	url = git@github.com:fermyon/StarlingMonkey
+	branch = "feat_fetch_rework"
